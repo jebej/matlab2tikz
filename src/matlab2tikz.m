@@ -3670,10 +3670,14 @@ function [m2t, str] = drawScatterPlot(m2t, h)
             if hasEdgeColor
                 drawOptions = opts_add(drawOptions, 'draw', ecolor);
             else
-                drawOptions = opts_add(drawOptions, 'color', xcolor); %TODO: why do we even need this one?
+                drawOptions = opts_add(drawOptions, 'draw opacity', '0');
             end
             if hasFaceColor
                 drawOptions = opts_add(drawOptions, 'fill', xcolor);
+                faceAlpha = getOrDefault(h, 'MarkerFaceAlpha', 'none');
+                if isnumeric(faceAlpha) && faceAlpha ~= 1.0
+                    drawOptions = opts_add(drawOptions, 'fill opacity', sprintf(m2t.ff,faceAlpha));
+                end
             end
         else % if changing marker size but same color on all marks
             markerOptions = opts_new();
@@ -3682,10 +3686,14 @@ function [m2t, str] = drawScatterPlot(m2t, h)
             if hasEdgeColor
                 markerOptions = opts_add(markerOptions, 'draw', ecolor);
             else
-                markerOptions = opts_add(markerOptions, 'draw', xcolor);
+                markerOptions = opts_add(markerOptions, 'draw opacity', '0');
             end
             if hasFaceColor
                 markerOptions = opts_add(markerOptions, 'fill', xcolor);
+                faceAlpha = getOrDefault(h, 'MarkerFaceAlpha', 'none');
+                if isnumeric(faceAlpha) && faceAlpha ~= 1.0
+                    drawOptions = opts_add(drawOptions, 'fill opacity', sprintf(m2t.ff,faceAlpha));
+                end
             end
             % for changing marker size, the 'scatter' option has to be added
             drawOptions = opts_add(drawOptions, 'color', xcolor);
